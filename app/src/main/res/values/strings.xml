@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Drone Simulator</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_bluetooth_manager.kt">BluetoothManager.kt</string>
+    <string name="title_activity_wifi_manager.kt">WifiManager.kt</string>
+    <string name="title_activity_drone_signal_generator.kt">DroneSignalGenerator.kt</string>
+    <string name="title_activity_remote_idsignal.kt">RemoteIDSignal.kt</string>
+    <string name="title_activity_bluetooth_manager">BluetoothManager</string>
+    <string name="title_activity_wifi_manager">WifiManager</string>
+    <string name="title_activity_drone_signal_generator">DroneSignalGenerator</string>
+    <string name="title_activity_remote_idsignal">RemoteIDSignal</string>
+</resources>
