@@ -10,6 +10,7 @@ import java.io.IOException
 import java.io.OutputStreamWriter
 import java.net.Socket
 
+
 class WifiManager(private val context: Context) {
     private val serverAddress = "192.168.0.1" // Example server address
     private val serverPort = 1234 // Example server port
