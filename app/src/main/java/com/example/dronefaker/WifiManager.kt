@@ -1,18 +1,45 @@
 package com.example.dronefaker
 
 import android.content.Context
-import android.net.wifi.WifiManager
+import com.example.dronefaker.RemoteIDSignal
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.io.OutputStreamWriter
+import java.net.Socket
 
 class WifiManager(private val context: Context) {
-    private val wifiManager: WifiManager by lazy {
-        context.getSystemService(Context.WIFI_SERVICE) as WifiManager
-    }
+    private val serverAddress = "192.168.0.1" // Example server address
+    private val serverPort = 1234 // Example server port
 
     fun broadcastSignal(remoteIDSignal: RemoteIDSignal) {
-        // Implement logic to broadcast the RemoteID signal over Wi-Fi
-    }
+        CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.IO) {
+                var socket: Socket? = null
+                var writer: OutputStreamWriter? = null
 
-    fun stopBroadcasting() {
-        // Implement logic to stop broadcasting over Wi-Fi
+                try {
+                    socket = Socket(serverAddress, serverPort)
+                    val outputStream = socket.getOutputStream()
+                    writer = OutputStreamWriter(outputStream)
+
+                    // Send RemoteID signal data over the socket
+                    writer.write(remoteIDSignal.toString())
+                    writer.flush()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } finally {
+                    // Close the writer and socket
+                    try {
+                        writer?.close()
+                        socket?.close()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
     }
 }

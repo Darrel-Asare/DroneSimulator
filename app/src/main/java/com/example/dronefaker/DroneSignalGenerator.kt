@@ -1,16 +1,21 @@
 package com.example.dronefaker
 
+import kotlin.random.Random
+
 class DroneSignalGenerator {
     fun generateRemoteIDSignal(): RemoteIDSignal {
-        // Implement logic to generate a fake RemoteID signal
         return RemoteIDSignal(
             droneId = "FAKE_DRONE_ID",
-            latitude = 37.7749,
-            longitude = -122.4194,
-            altitude = 100.0,
-            speed = 10.0,
-            heading = 90.0,
+            latitude = getRandomCoordinate(),
+            longitude = getRandomCoordinate(),
+            altitude = Random.nextDouble(0.0, 500.0),
+            speed = Random.nextDouble(0.0, 20.0),
+            heading = Random.nextDouble(0.0, 360.0),
             timestamp = System.currentTimeMillis()
         )
+    }
+
+    private fun getRandomCoordinate(): Double {
+        return Random.nextDouble(-90.0, 90.0)
     }
 }

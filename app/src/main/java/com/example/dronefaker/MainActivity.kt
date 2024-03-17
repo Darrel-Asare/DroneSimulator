@@ -61,7 +61,6 @@ class MainActivity : ComponentActivity() {
 
     private fun stopFakingSignals() {
         bluetoothManager.stopBroadcasting()
-        wifiManager.stopBroadcasting()
     }
 
     @Preview(showBackground = true)
