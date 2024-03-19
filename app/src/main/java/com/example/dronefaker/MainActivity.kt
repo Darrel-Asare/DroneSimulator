@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun DroneFakerApp() {
-        val remoteIDSignalState = remember { mutableStateOf<RemoteIDSignal?>(null) }
+        val aircraftDataState = remember { mutableStateOf<Aircraft?>(null) }
 
         MaterialTheme {
             Surface(
@@ -48,25 +48,25 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier.align(Alignment.TopCenter)
                     ) {
-                        Button(onClick = { startFakingSignals(remoteIDSignalState) }) {
+                        Button(onClick = { startFakingSignals(aircraftDataState) }) {
                             Text("Start Faking Signals")
                         }
                         Button(onClick = { stopFakingSignals() }) {
                             Text("Stop Faking Signals")
                         }
-                        RemoteIDSignalDisplay(remoteIDSignalState)
+                        AircraftDataDisplay(aircraftDataState)
                     }
                 }
             }
         }
     }
 
-    private fun startFakingSignals(remoteIDSignalState: androidx.compose.runtime.MutableState<RemoteIDSignal?>) {
+    private fun startFakingSignals(aircraftDataState: androidx.compose.runtime.MutableState<Aircraft?>) {
         GlobalScope.launch(Dispatchers.IO) {
-            val remoteIDSignal = droneSignalGenerator.generateRemoteIDSignal()
-            bluetoothManager.broadcastSignal(remoteIDSignal)
-            wifiManager.broadcastSignal(remoteIDSignal)
-            remoteIDSignalState.value = remoteIDSignal
+            val aircraftData = droneSignalGenerator.generateAircraftData()
+            bluetoothManager.broadcastSignal(aircraftData)
+            wifiManager.broadcastSignal(aircraftData)
+            aircraftDataState.value = aircraftData
         }
     }
 
@@ -82,17 +82,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun RemoteIDSignalDisplay(remoteIDSignalState: androidx.compose.runtime.MutableState<RemoteIDSignal?>) {
-    val remoteIDSignal = remoteIDSignalState.value
-    if (remoteIDSignal != null) {
+fun AircraftDataDisplay(aircraftDataState: androidx.compose.runtime.MutableState<Aircraft?>) {
+    val aircraftData = aircraftDataState.value
+    if (aircraftData != null) {
         Column {
-            Text("Drone ID: ${remoteIDSignal.droneId}")
-            Text("Latitude: ${remoteIDSignal.latitude}")
-            Text("Longitude: ${remoteIDSignal.longitude}")
-            Text("Altitude: ${remoteIDSignal.altitude}")
-            Text("Speed: ${remoteIDSignal.speed}")
-            Text("Heading: ${remoteIDSignal.heading}")
-            Text("Timestamp: ${remoteIDSignal.timestamp}")
+            Text("MAC Address: ${aircraftData.macAddress}")
+            Text("Connection RSSI: ${aircraftData.connection.rssi}")
+            Text("Connection Transport Type: ${aircraftData.connection.transportType}")
+            Text("Connection MAC Address: ${aircraftData.connection.macAddress}")
+            Text("Identification 1 UA Type: ${aircraftData.identification1.uaType}")
+            Text("Identification 1 ID Type: ${aircraftData.identification1.idType}")
+            Text("Identification 1 UAS ID: ${aircraftData.identification1.uasId.contentToString()}")
+            // Add more Text composables to display other properties
         }
     }
 }

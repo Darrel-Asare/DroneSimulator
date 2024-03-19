@@ -1,6 +1,6 @@
 package com.example.dronefaker
 
-data class RemoteIDSignal(
+/* data class RemoteIDSignal(
     val droneId: String,
     val latitude: Double,
     val longitude: Double,
@@ -8,4 +8,4 @@ data class RemoteIDSignal(
     val speed: Double,
     val heading: Double,
     val timestamp: Long
-)
+) */

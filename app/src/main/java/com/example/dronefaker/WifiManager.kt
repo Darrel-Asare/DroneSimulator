@@ -1,40 +1,37 @@
 package com.example.dronefaker
 
 import android.content.Context
-import com.example.dronefaker.RemoteIDSignal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.io.OutputStreamWriter
+import java.io.ObjectOutputStream
 import java.net.Socket
-
 
 class WifiManager(private val context: Context) {
     private val serverAddress = "192.168.0.1" // Example server address
     private val serverPort = 1234 // Example server port
 
-    fun broadcastSignal(remoteIDSignal: RemoteIDSignal) {
+    fun broadcastSignal(aircraftData: Aircraft) {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 var socket: Socket? = null
-                var writer: OutputStreamWriter? = null
+                var outputStream: ObjectOutputStream? = null
 
                 try {
                     socket = Socket(serverAddress, serverPort)
-                    val outputStream = socket.getOutputStream()
-                    writer = OutputStreamWriter(outputStream)
+                    outputStream = ObjectOutputStream(socket.getOutputStream())
 
-                    // Send RemoteID signal data over the socket
-                    writer.write(remoteIDSignal.toString())
-                    writer.flush()
+                    // Send Aircraft data over the socket
+                    outputStream.writeObject(aircraftData.toString())
+                    outputStream.flush()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 } finally {
-                    // Close the writer and socket
+                    // Close the output stream and socket
                     try {
-                        writer?.close()
+                        outputStream?.close()
                         socket?.close()
                     } catch (e: IOException) {
                         e.printStackTrace()

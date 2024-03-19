@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import java.io.IOException
+import java.io.ObjectOutputStream
 import java.util.UUID
 
 class BluetoothManager(private val context: Context) {
@@ -18,7 +19,7 @@ class BluetoothManager(private val context: Context) {
 
     private val broadcastSockets = mutableMapOf<BluetoothDevice, BluetoothSocket>()
 
-    fun broadcastSignal(remoteIDSignal: RemoteIDSignal) {
+    fun broadcastSignal(aircraftData: Aircraft) {
         if (hasBluetoothPermission() && hasBluetoothConnectPermission()) {
             val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
             if (pairedDevices != null) {
@@ -34,11 +35,11 @@ class BluetoothManager(private val context: Context) {
                             socket.connect()
                             broadcastSockets[device] = socket
 
-                            // Send RemoteID signal data over the socket
+                            // Send Aircraft data over the socket
                             val outputStream = socket.outputStream
-                            val signalData = remoteIDSignal.toString().toByteArray()
-                            outputStream.write(signalData)
-                            outputStream.flush()
+                            val objectOutputStream = ObjectOutputStream(outputStream)
+                            objectOutputStream.writeObject(aircraftData.toString())
+                            objectOutputStream.flush()
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -80,7 +81,7 @@ class BluetoothManager(private val context: Context) {
     private fun hasBluetoothConnectPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             context.packageManager.checkPermission(
-                android.Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.BLUETOOTH_CONNECT,
                 context.packageName
             ) == PackageManager.PERMISSION_GRANTED
         } else {
