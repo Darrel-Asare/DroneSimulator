@@ -6,8 +6,8 @@ import java.lang.System as JavaSystem
 class DroneSignalGenerator(private val seed: Long? = null) {
     private val random: Random = if (seed != null) Random(seed) else Random.Default
 
-    fun generateAircraftData(): Aircraft {
-        return Aircraft(
+    fun generateAircraftData(): AircraftData {
+        return AircraftData(
             macAddress = random.nextLong(),
             connection = generateConnection(),
             identification1 = generateIdentification(),

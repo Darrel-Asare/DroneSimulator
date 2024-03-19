@@ -1,6 +1,6 @@
 package com.example.dronefaker
 
-data class Aircraft(
+data class AircraftData(
     val macAddress: Long,
     val connection: Connection,
     val identification1: Identification,

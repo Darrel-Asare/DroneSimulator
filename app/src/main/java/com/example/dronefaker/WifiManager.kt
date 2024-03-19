@@ -13,7 +13,7 @@ class WifiManager(private val context: Context) {
     private val serverAddress = "192.168.0.1" // Example server address
     private val serverPort = 1234 // Example server port
 
-    fun broadcastSignal(aircraftData: Aircraft) {
+    fun broadcastSignal(aircraftData: AircraftData) {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 var socket: Socket? = null

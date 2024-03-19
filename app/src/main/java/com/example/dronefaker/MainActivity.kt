@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun DroneFakerApp() {
-        val aircraftDataState = remember { mutableStateOf<Aircraft?>(null) }
+        val aircraftDataState = remember { mutableStateOf<AircraftData?>(null) }
 
         MaterialTheme {
             Surface(
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun startFakingSignals(aircraftDataState: androidx.compose.runtime.MutableState<Aircraft?>) {
+    private fun startFakingSignals(aircraftDataState: androidx.compose.runtime.MutableState<AircraftData?>) {
         GlobalScope.launch(Dispatchers.IO) {
             val aircraftData = droneSignalGenerator.generateAircraftData()
             bluetoothManager.broadcastSignal(aircraftData)
@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AircraftDataDisplay(aircraftDataState: androidx.compose.runtime.MutableState<Aircraft?>) {
+fun AircraftDataDisplay(aircraftDataState: androidx.compose.runtime.MutableState<AircraftData?>) {
     val aircraftData = aircraftDataState.value
     if (aircraftData != null) {
         Column {

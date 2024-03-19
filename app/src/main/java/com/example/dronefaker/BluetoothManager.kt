@@ -19,7 +19,7 @@ class BluetoothManager(private val context: Context) {
 
     private val broadcastSockets = mutableMapOf<BluetoothDevice, BluetoothSocket>()
 
-    fun broadcastSignal(aircraftData: Aircraft) {
+    fun broadcastSignal(aircraftData: AircraftData) {
         if (hasBluetoothPermission() && hasBluetoothConnectPermission()) {
             val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
             if (pairedDevices != null) {
